@@ -1,5 +1,5 @@
 # PRS-Game-Frontend-
-Paper Rock Scizzors Game Frondend Repo
+Paper Rock Scizzors Game Frontend Repo
 ###### FrontEnd
 	
 	React komponentai:
