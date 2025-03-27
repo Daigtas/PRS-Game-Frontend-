@@ -32,4 +32,5 @@ Paper Rock Scizzors Game Frondend Repo
 	|	* Button
 	|	* Modal
 	
-Starting the Sprint: 2025-03-27
+Starting the Sprint: 2025-03-27 
+Created Issues
