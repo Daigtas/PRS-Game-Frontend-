@@ -9,7 +9,11 @@ return (
         <Header />
         <ScoreBoard />
         <PlayBoard />
-        <Footer />
+        <Footer 
+          resetGame={resetGame}
+          userState={userState}
+          setUserState={setUserState}
+        />
     </div>
 )
 };
