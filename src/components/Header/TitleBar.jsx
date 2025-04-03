@@ -1,8 +1,9 @@
 import React from "react";
+import Text from "../../tools/Text";
 
 const TitleBar = () => {
 return (
-    <h1>Paper Rock Scissors Game</h1>
+    <Text tag = "h1">Paper Rock Scissors Game</Text>
 )
 };
 export default TitleBar;
