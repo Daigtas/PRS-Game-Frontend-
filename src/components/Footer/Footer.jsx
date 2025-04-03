@@ -2,10 +2,10 @@ import React from 'react';
 import Reset from './Reset';
 import Rules from './Rules/Rules';
 
-function Footer({ resetGame, userState, setUserState }) {
+function Footer() {
   return (
     <div className="buttons">
-      <Reset resetGame={resetGame} />
+      <Reset/>
       <Rules />
     </div>
   );
