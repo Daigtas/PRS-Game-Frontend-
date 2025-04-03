@@ -10,8 +10,8 @@ function Footer() {
       <Reset/>
       <Rules />
       <Button>Login</Button>
+      <Button>Register</Button>
       <Button>Logout</Button>
-
     </div>
   );
 }
