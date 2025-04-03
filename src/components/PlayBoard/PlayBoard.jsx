@@ -2,6 +2,7 @@ import React from 'react';
 import ChooseButton from './ChooseButton';
 import PlayButton from './PlayButton';
 import Results from './Results';
+import './playBoard.css';
 
 function PlayBoard({ playerChoice, computerChoice, result, updatePlayerChoice, playGame }) {
   return (
