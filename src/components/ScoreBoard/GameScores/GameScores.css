@@ -1,0 +1,22 @@
+.game-scores-wrapper{
+    text-align: center;
+    width: 30%;
+
+
+}
+.scores {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+    text-align: center;
+}
+
+.score-box{
+    display:flex;
+    flex-direction: column;
+
+}
+
+.score-box h3, p{
+    text-align: center;
+}

@@ -1,7 +1,8 @@
 import React from 'react';
 import Button from '../../tools/Button';
+
 function Reset() {
-  return (
+   return (
     <Button>Reset</Button>
   );
 }

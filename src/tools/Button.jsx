@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 function Button({ type = 'secondary', onClick, children, className = '', ...props }) {
   return (
     <button 
