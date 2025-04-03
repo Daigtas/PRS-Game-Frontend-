@@ -1,9 +1,8 @@
 import React from 'react';
-import Button from "../../tools/Button";
-
-function Reset({ resetGame }) {
+import Button from '../../tools/Button';
+function Reset() {
   return (
-    <Button onClick={resetGame}>Reset</Button>
+    <Button>Reset</Button>
   );
 }
 

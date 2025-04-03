@@ -1,4 +1,4 @@
-import React, { Children } from "react";
+import React from "react";
 import Footer from './Footer/Footer'
 import Header from './Header/Header'
 import PlayBoard from './PlayBoard/PlayBoard'

@@ -4,10 +4,10 @@ import Rules from './Rules/Rules';
 import Button from '../../tools/Button';
 import './footer.css';
 
-function Footer({ resetGame, userState, setUserState }) {
+function Footer() {
   return (
     <div className="buttons">
-      <Reset resetGame={resetGame} />
+      <Reset/>
       <Rules />
       <Button>Login</Button>
       <Button>Logout</Button>
