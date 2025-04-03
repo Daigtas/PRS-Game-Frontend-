@@ -1,8 +1,9 @@
-import React from "react";
+import React from 'react';
 
-const Reset = () => {
-return (
-    <></>
-)
-};
+function Reset({ resetGame }) {
+  return (
+    <Button onClick={resetGame}>Reset</Button>
+  );
+}
+
 export default Reset;
