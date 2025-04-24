@@ -1,9 +1,9 @@
 import React from "react";
-import GameScores from "./GameScores/GameScores";
+import GameHistory from "./GameHistory/GameHistory";
 
 const ScoreBoard = () => {
 return (
-    <GameScores/>
-)
+    <GameHistory></GameHistory>
+  )
 };
 export default ScoreBoard;

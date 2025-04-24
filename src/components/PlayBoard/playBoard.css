@@ -1,0 +1,62 @@
+#play-btn, .play-btn {
+    padding: 20px 40px;
+    font-size: 1.5rem;
+    width: 150px;
+    height: 80px;
+    border-radius: 20px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+#play-btn:hover, .play-btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    background-color: var(--secondary-color);
+}
+
+#play-btn:active, .play-btn:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+
+.game-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: var(--border-radius);
+    padding: 2.5rem;
+    box-shadow: var(--box-shadow);
+}
+
+.middle-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 150px;
+}
+
+.choice-container {
+    text-align: center;
+    flex: 1;
+}
+
+.choice-icon {
+    width: 120px;
+    height: 120px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    box-shadow: var(--box-shadow);
+    font-size: 3rem;
+    color: var(--light-color);
+    transition: all 0.3s ease;
+}
