@@ -60,3 +60,35 @@
     color: var(--light-color);
     transition: all 0.3s ease;
 }
+.player-choice {
+    cursor: pointer;
+    border: 3px solid transparent;
+    position: relative;
+}
+
+.player-choice:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+.player-choice.active {
+    border-color: var(--success-color);
+    animation: pulse 1.5s infinite;
+}
+
+.player-choice::after {
+    content: 'Click to change';
+    position: absolute;
+    bottom: -30px;
+    left: 0;
+    right: 0;
+    font-size: 0.85rem;
+    color: var(--light-color);
+    opacity: 0.8;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(76, 201, 240, 0.6); }
+    70% { box-shadow: 0 0 0 10px rgba(76, 201, 240, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(76, 201, 240, 0); }
+}
