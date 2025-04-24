@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Button from '../../../tools/Button';
 import RulesWindow from './RulesWindow';
+import './rules.css'
 
 function Rules() {
   const [isOpen, setIsOpen] = useState(false);
