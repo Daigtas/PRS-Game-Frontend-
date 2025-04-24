@@ -13,6 +13,7 @@ function ChooseButton({ choice, updateChoice }) {
   return (
     <div className="choice-container">
       <PlayerName />
+      <h3>Computer Choice</h3>
       <div 
         className={`choice-icon player-choice ${choice ? 'active' : ''}`}
         onClick={cycleChoice}
