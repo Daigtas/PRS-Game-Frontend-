@@ -1,3 +1,69 @@
+.game-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: var(--border-radius);
+    padding: 2.5rem;
+    box-shadow: var(--box-shadow);
+}
+
+.choice-container {
+    text-align: center;
+    flex: 1;
+}
+
+.middle-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 150px;
+}
+
+.choice-container h3 {
+    margin-bottom: 15px;
+    color: var(--light-color);
+}
+
+.choice-icon {
+    width: 120px;
+    height: 120px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    box-shadow: var(--box-shadow);
+    font-size: 3rem;
+    color: var(--light-color);
+    transition: all 0.3s ease;
+}
+
+.result-message {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 20px 0;
+    min-height: 40px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.win {
+    color: var(--success-color);
+}
+
+.lose {
+    color: var(--danger-color);
+}
+
+.tie {
+    color: var(--neutral-color);
+}
 #play-btn, .play-btn {
     padding: 20px 40px;
     font-size: 1.5rem;
@@ -91,4 +157,22 @@
     0% { box-shadow: 0 0 0 0 rgba(76, 201, 240, 0.6); }
     70% { box-shadow: 0 0 0 10px rgba(76, 201, 240, 0); }
     100% { box-shadow: 0 0 0 0 rgba(76, 201, 240, 0); }
+}
+
+.choice-icon.animate {
+  animation: bounce-in 1s ease-in-out;
+}
+
+@keyframes bounce-in {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
 }

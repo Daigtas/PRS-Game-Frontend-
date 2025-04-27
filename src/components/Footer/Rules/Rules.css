@@ -1,0 +1,11 @@
+
+.rules-content ul {
+    padding-left: 10px;
+}
+
+.rules-content li {
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+}
+
+/* Ensure no styling conflicts with the main modal styles */
