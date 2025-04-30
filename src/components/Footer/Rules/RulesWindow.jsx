@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from '../../../tools/Modal';
-import './Rules.css';
+import './rules.css';
 
 function RulesWindow({ isOpen, onClose }) {
   return (
