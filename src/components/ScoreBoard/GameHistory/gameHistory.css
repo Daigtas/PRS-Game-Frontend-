@@ -9,3 +9,37 @@
     margin-bottom: 15px;
     color: var(--light-color);
 }
+
+.history-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.history-item {
+    background-color: rgba(255, 255, 255, 0.15);
+    padding: 10px;
+    border-radius: var(--border-radius);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.history-item span {
+    font-weight: bold;
+}
+
+.history-item .player {
+    color: var(--success-color);
+}
+
+.history-item .computer {
+    color: var(--danger-color);
+}
+
+.history-item .winner {
+    color: var(--light-color);
+}
