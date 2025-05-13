@@ -4,12 +4,16 @@ import PlayButton from './PlayButton';
 import Results from './Results';
 import './playBoard.css';
 
-function PlayBoard({ playerChoice, computerChoice, result, updatePlayerChoice, playGame }) {
-  const [isAnimating, setIsAnimating] = useState(false);
+function PlayBoard({ playerChoice, computerChoice, result, updatePlayerChoice, playGame, currentUser }) {  const [isAnimating, setIsAnimating] = useState(false);
   const [tempComputerChoice, setTempComputerChoice] = useState(null);
-  const [showResults, setShowResults] = useState(false);
-
+  const [showResults, setShowResults] = useState(false);  
+  
   const handlePlay = () => {
+    if (!playerChoice) {
+      alert("Please choose Rock, Paper, or Scissors first!");
+      return;
+    }
+    
     setIsAnimating(true);
     setShowResults(false);
 
@@ -19,17 +23,19 @@ function PlayBoard({ playerChoice, computerChoice, result, updatePlayerChoice, p
       setTempComputerChoice(randomChoice);
     }, 100);
 
-    playGame();
-
+    // Wait for animation to complete before updating game state
     setTimeout(() => {
       clearInterval(interval);
+      
+      // Only call playGame after animation finishes
+      playGame();
+      
       setTempComputerChoice(computerChoice);
       setIsAnimating(false);
-
-      setTimeout(() => {
-        setShowResults(true);
-      }, 300);
-    }, 1000);
+      
+      // Show results immediately after animation ends to prevent layout shift
+      setShowResults(true);
+    }, 2000);
   };
 
   return (
@@ -37,11 +43,11 @@ function PlayBoard({ playerChoice, computerChoice, result, updatePlayerChoice, p
       <div className="game-area">
         <ChooseButton 
           choice={playerChoice} 
-          updateChoice={updatePlayerChoice} 
+          updateChoice={updatePlayerChoice}
+          currentUser={currentUser}
         />
-        
-        <div className="middle-container">
-          {showResults ? <Results result={result} /> : null}
+          <div className="middle-container">
+          {showResults ? <Results result={result} /> : <div className="result-placeholder">VS</div>}
           <PlayButton onPlay={handlePlay} />
         </div>
         

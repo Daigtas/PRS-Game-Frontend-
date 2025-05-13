@@ -1,22 +1,53 @@
-.game-scores-wrapper{
-    text-align: center;
-    width: 30%;
-
-
-}
-.scores {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    justify-content: center;
-    text-align: center;
-}
-
-.score-box{
-    display:flex;
+.game-scores-wrapper {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
+    display: flex;
     flex-direction: column;
-
+    width: 90%;
 }
 
-.score-box h3, p{
+.title-bar h2 {
     text-align: center;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.player-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.score-divider {
+    text-align: right;
+}
+
+.scores {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.score-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 45%;
+}
+
+.score-box p {
+    font-size: 3rem;
+    margin: 0;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.highscores-button {
+    align-self: center;
+    margin-top: 10px;
+    width: 80%;
 }

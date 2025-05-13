@@ -1,7 +1,7 @@
 import React from 'react';
 import PlayerName from './PlayerName';
 
-function ChooseButton({ choice, updateChoice }) {
+function ChooseButton({ choice, updateChoice, currentUser }) {
   const choices = ['rock', 'paper', 'scissors'];
   
   const cycleChoice = () => {
@@ -12,7 +12,7 @@ function ChooseButton({ choice, updateChoice }) {
   
   return (
     <div className="choice-container">
-      <PlayerName />
+      <PlayerName currentUser={currentUser} />
       <h3>Your Choice</h3>
       <div 
         className={`choice-icon player-choice ${choice ? 'active' : ''}`}

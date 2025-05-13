@@ -1,0 +1,67 @@
+.history-list {
+  max-height: 180px;
+  overflow-y: auto;
+  margin-top: 10px;
+}
+
+.history-item {
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.game-number {
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.rock, .paper, .scissors {
+  font-weight: bold;
+}
+
+.rock {
+  color: #ff9a3c;
+}
+
+.paper {
+  color: #6abcef;
+}
+
+.scissors {
+  color: #ff6b6b;
+}
+
+.you-won {
+  color: #4cd964;
+  font-weight: bold;
+}
+
+.pc-won {
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+.tie {
+  color: #ffcc00;
+  font-weight: bold;
+}
+
+.history-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.history-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+}
+
+.history-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
