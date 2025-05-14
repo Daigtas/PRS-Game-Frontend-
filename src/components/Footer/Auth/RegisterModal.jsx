@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import Modal from '../../../tools/Modal';
 import Button from '../../../tools/Button';
-
-// API base URL - change this to match your Flask server
-const API_URL = 'http://localhost:5000';
+import API_URL from '../../../config';
 
 function RegisterModal({ isOpen, onClose, onRegisterSuccess }) {
   const [username, setUsername] = useState('');
@@ -36,6 +34,7 @@ function RegisterModal({ isOpen, onClose, onRegisterSuccess }) {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ username, password }),
       });
 
@@ -51,6 +50,7 @@ function RegisterModal({ isOpen, onClose, onRegisterSuccess }) {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ username, password }),
       });
 

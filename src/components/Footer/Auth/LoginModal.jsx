@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import Modal from '../../../tools/Modal';
 import Button from '../../../tools/Button';
-
-// API base URL - change this to match your Flask server
-const API_URL = 'http://localhost:5000';
+import API_URL from '../../../config';
 
 function LoginModal({ isOpen, onClose, onLogin }) {
   const [username, setUsername] = useState('');
@@ -21,12 +19,12 @@ function LoginModal({ isOpen, onClose, onLogin }) {
     setError('');
     setIsLoading(true);
 
-    try {
-      const response = await fetch(`${API_URL}/login`, {
+    try {      const response = await fetch(`${API_URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ username, password }),
       });
 

@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import Main from './components/Main';
 import './styles/main.css';
-
-const API_URL = 'http://localhost:5000';
+import API_URL from './config';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -74,13 +73,13 @@ function App() {
           const scoresData = JSON.parse(storedScores);
           const userScore = scoresData.zaidejas || 0;
           
-          if (userScore > (currentUser.highscore || 0)) {
-            await fetch(`${API_URL}/update_highscore`, {
+          if (userScore > (currentUser.highscore || 0)) {            await fetch(`${API_URL}/update_highscore`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${currentUser.token}`
               },
+              credentials: 'include',
               body: JSON.stringify({
                 user_id: currentUser.id,
                 highscore: userScore
@@ -121,11 +120,11 @@ function App() {
     
     try {
       window.lastGameDataFetch[userId] = now;
-      
-      const historyResponse = await fetch(`${API_URL}/game_history/${userId}`, {
+        const historyResponse = await fetch(`${API_URL}/game_history/${userId}`, {
         headers: {
           'Authorization': `Bearer ${currentUser.token}`
-        }
+        },
+        credentials: 'include'
       });
       
       if (historyResponse.ok) {
@@ -168,15 +167,12 @@ function App() {
     }));
   };
   const playGame = () => {
-    // Pre-calculate computer's choice
     const choices = ['rock', 'paper', 'scissors'];
     const computerChoice = choices[Math.floor(Math.random() * choices.length)];
     
-    // Determine the winner based on player and computer choices
     const winner = determineWinner(gameState.playerChoice, computerChoice);
     const newGameCount = gameState.gameCount + 1;
     
-    // Calculate new scores
     const newScores = { ...gameState.scores };
     if (winner === 'zaidejas') {
       newScores.zaidejas += 1;
@@ -184,7 +180,6 @@ function App() {
       newScores.pc += 1;
     }
 
-    // Create history item
     const historyItem = {
       zaidimas: newGameCount,
       zaidejas: gameState.playerChoice,
@@ -194,7 +189,6 @@ function App() {
 
     const newHistory = [...gameState.history, historyItem];
     
-    // Update game state (this happens after animation completes in PlayBoard)
     setGameState({
       ...gameState,
       computerChoice,
@@ -212,13 +206,13 @@ function App() {
         ...prev,
         highscore: currentScore
       }));
-      
-      fetch(`${API_URL}/update_highscore`, {
+        fetch(`${API_URL}/update_highscore`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${currentUser.token}`
         },
+        credentials: 'include',
         body: JSON.stringify({
           user_id: currentUser.id,
           highscore: currentScore
@@ -242,26 +236,26 @@ function App() {
         try {
           if (window.pendingGameUpdates && window.pendingGameUpdates.length > 0) {
             const updates = [...window.pendingGameUpdates];
-            window.pendingGameUpdates = [];
-              await fetch(`${API_URL}/game_history/batch`, {
+            window.pendingGameUpdates = [];              await fetch(`${API_URL}/game_history/batch`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${currentUser.token}`
               },
+              credentials: 'include',
               body: JSON.stringify({
                 user_id: currentUser.id,
                 games: updates
               })
             });
             
-            const currentScore = newScores.zaidejas;            if (currentScore > (currentUser.highscore || 0)) {
-              await fetch(`${API_URL}/update_highscore`, {
+            const currentScore = newScores.zaidejas;            if (currentScore > (currentUser.highscore || 0)) {              await fetch(`${API_URL}/update_highscore`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
                   'Authorization': `Bearer ${currentUser.token}`
                 },
+                credentials: 'include',
                 body: JSON.stringify({
                   user_id: currentUser.id,
                   highscore: currentScore
@@ -321,11 +315,11 @@ function App() {
     setCurrentUser(user);
     await syncLocalStorageToApi();
     
-    try {
-      const response = await fetch(`${API_URL}/user/${user.id}`, {
+    try {      const response = await fetch(`${API_URL}/user/${user.id}`, {
         headers: {
           'Authorization': `Bearer ${user.token}`
-        }
+        },
+        credentials: 'include'
       });
       
       if (response.ok) {

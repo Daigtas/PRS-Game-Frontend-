@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import GameHistory from "./GameHistory/GameHistory";
 import GameScores from "./GameScores/GameScores";
 import "./ScoreBoard.css";
-
-// API base URL - change this to match your Flask server
-const API_URL = 'http://localhost:5000';
+import API_URL from '../../config';
 
 const ScoreBoard = ({ scores, history, currentUser, updateTrigger }) => {
   const [highScores, setHighScores] = useState([]);
@@ -16,7 +14,9 @@ const ScoreBoard = ({ scores, history, currentUser, updateTrigger }) => {
     // Define fetch function outside the condition to ensure consistent behavior
     const fetchHighScores = async () => {
       try {
-        const response = await fetch(`${API_URL}/scoreboard`);
+        const response = await fetch(`${API_URL}/scoreboard`, {
+          credentials: 'include'
+        });
         if (response.ok) {
           const data = await response.json();
           // Sort high scores in descending order
