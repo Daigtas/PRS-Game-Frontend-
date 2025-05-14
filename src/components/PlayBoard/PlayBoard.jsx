@@ -14,10 +14,8 @@ function PlayBoard({ playerChoice, computerChoice, result, updatePlayerChoice, p
     }
   }, [computerChoice, isAnimating]);
   
-  // Ensure the computer choice is correctly displayed after animation stops
   useEffect(() => {
     if (!isAnimating && computerChoice) {
-      // Small delay to ensure state is in sync
       const timer = setTimeout(() => {
         setTempComputerChoice(computerChoice);
       }, 50);
