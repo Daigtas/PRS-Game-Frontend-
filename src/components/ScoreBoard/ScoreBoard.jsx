@@ -2,27 +2,32 @@ import React, { useState, useEffect } from "react";
 import GameHistory from "./GameHistory/GameHistory";
 import GameScores from "./GameScores/GameScores";
 import "./ScoreBoard.css";
-import API_URL from '../../config';
+import API_URL, { getApiHeaders } from '../../config';
 
 const ScoreBoard = ({ scores, history, currentUser, updateTrigger }) => {
   const [highScores, setHighScores] = useState([]);
   const [showHighScores, setShowHighScores] = useState(false);
-
-  // Fetch high scores from the API when component mounts or when showHighScores changes
-  // or when the updateTrigger changes (game completed)
   useEffect(() => {
-    // Define fetch function outside the condition to ensure consistent behavior
     const fetchHighScores = async () => {
       try {
+        console.log('Fetching highscores from server...');
         const response = await fetch(`${API_URL}/scoreboard`, {
+          headers: getApiHeaders(),
           credentials: 'include'
         });
         if (response.ok) {
           const data = await response.json();
-          // Sort high scores in descending order
           const sortedData = [...data].sort((a, b) => b.highscore - a.highscore);
           setHighScores(sortedData);
           console.log('Highscores updated:', sortedData);
+          if (currentUser && currentUser.id) {
+            const userScore = sortedData.find(score => score.username === currentUser.username);
+            if (userScore) {
+              console.log(`User ${currentUser.username} has highscore: ${userScore.highscore}`);
+            } else {
+              console.log(`User ${currentUser.username} not found in highscores`);
+            }
+          }
         }
       } catch (error) {
         console.error('Error fetching high scores:', error);
@@ -32,11 +37,8 @@ const ScoreBoard = ({ scores, history, currentUser, updateTrigger }) => {
     if (showHighScores) {
       fetchHighScores();
     } else {
-      // Initialize with empty array when not showing high scores
-      // This ensures consistent state management
-      setHighScores([]);
-    }
-  }, [showHighScores, updateTrigger]); // Add updateTrigger to dependencies
+      setHighScores([]);    }
+  }, [showHighScores, updateTrigger, currentUser]);
 
   const toggleHighScores = () => {
     setShowHighScores(prev => !prev);
