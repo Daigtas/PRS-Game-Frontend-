@@ -1,13 +1,24 @@
 .game-history {
-    flex: 3;
-    padding-right: 20px;
-    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 .game-history h2, .scores-area h2 {
     text-align: center;
     margin-bottom: 15px;
     color: var(--light-color);
+}
+
+.game-history p {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 1rem;
 }
 
 .history-container {
@@ -19,6 +30,24 @@
     padding-right: 10px;
 }
 
+.history-list {
+    max-height: 150px;
+    overflow-y: auto;
+    margin-top: 10px;
+    padding-right: 10px;
+}
+
+.history-list::-webkit-scrollbar {
+    width: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+}
+
 .history-item {
     background-color: rgba(255, 255, 255, 0.15);
     padding: 10px;
@@ -26,6 +55,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
 }
 
 .history-item span {
@@ -42,4 +73,42 @@
 
 .history-item .winner {
     color: var(--light-color);
+}
+
+.game-number {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.rock, .paper, .scissors {
+    display: inline-block;
+    margin: 0 3px;
+}
+
+.rock {
+    color: #ffbb33;
+}
+
+.paper {
+    color: #6abcef;
+}
+
+.scissors {
+    color: #ff6b6b;
+}
+
+.winner {
+    margin-left: 5px;
+}
+
+.you-won {
+    color: #4cd964;
+}
+
+.pc-won {
+    color: #ff6b6b;
+}
+
+.tie {
+    color: #ffcc00;
 }

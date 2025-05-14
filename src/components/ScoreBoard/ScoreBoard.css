@@ -1,0 +1,43 @@
+.score-board {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 20px;
+  margin-bottom: 30px;
+}
+
+@media (min-width: 768px) {
+  .score-board {
+    grid-template-columns: 70% 30%;
+  }
+}
+
+.highscores-display {
+  background-color: #193b7d;
+  border-radius: 10px;
+  padding: 20px;
+  color: white;
+  cursor: pointer;
+}
+
+.highscores-display h3 {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.highscores-display ol {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.highscores-display li {
+  margin-bottom: 5px;
+  font-size: 0.95rem;
+}
+
+/* Make the first high score special */
+.highscores-display li:first-child {
+  color: gold;
+  font-weight: bold;
+}

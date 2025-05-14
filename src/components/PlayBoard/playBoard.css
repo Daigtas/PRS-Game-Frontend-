@@ -44,13 +44,18 @@
     transition: all 0.3s ease;
 }
 
-.result-message {
+.result-message, .result-placeholder {
     text-align: center;
     font-size: 1rem;
     font-weight: bold;
     margin: 20px 0;
     min-height: 40px;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.result-placeholder {
+    color: var(--neutral-color);
+    opacity: 0.7;
 }
 
 .win {

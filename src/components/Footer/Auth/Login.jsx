@@ -2,22 +2,28 @@ import React, { useState } from 'react';
 import Button from '../../../tools/Button';
 import LoginModal from './LoginModal';
 
-function Login({ userState, setUserState }) {
+function Login({ currentUser, onLogin, onLogout }) {
   const [isOpen, setIsOpen] = useState(false);
+  
+  const handleLogout = () => {
+    if (onLogout) {
+      onLogout();
+    }
+  };
   
   return (
     <>
-      {userState.isLoggedIn ? (
-        <Button>
+      {currentUser ? (
+        <Button onClick={handleLogout}>
           Logout
         </Button>
       ) : (
         <>
-          <Button>Login</Button>
+          <Button onClick={() => setIsOpen(true)}>Login</Button>
           <LoginModal 
             isOpen={isOpen} 
             onClose={() => setIsOpen(false)} 
-            setUserState={setUserState}
+            onLogin={onLogin}
           />
         </>
       )}

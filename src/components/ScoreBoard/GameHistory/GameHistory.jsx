@@ -3,11 +3,15 @@ import HistoryList from './HistoryList';
 import TitleBar from './TitleBar';
 import './gameHistory.css';
 
-function GameHistory({ history }) {
+function GameHistory({ history, currentUser }) {
   return (
     <div className="game-history">
       <TitleBar />
-      <HistoryList history={history} />
+      {currentUser ? (
+        <HistoryList history={history} />
+      ) : (
+        <p>Log in to see your game history.</p>
+      )}
     </div>
   );
 }
