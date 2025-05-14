@@ -29,6 +29,13 @@
     color: var(--light-color);
 }
 
+.player-logged-in {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
 .choice-icon {
     width: 120px;
     height: 120px;

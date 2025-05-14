@@ -9,11 +9,10 @@ function ChooseButton({ choice, updateChoice, currentUser }) {
     const nextIndex = (currentIndex + 1) % choices.length;
     updateChoice(choices[nextIndex]);
   };
-  
-  return (
+    return (
     <div className="choice-container">
       <PlayerName currentUser={currentUser} />
-      <h3>Your Choice</h3>
+      {!currentUser && <h3>Your Choice</h3>}
       <div 
         className={`choice-icon player-choice ${choice ? 'active' : ''}`}
         onClick={cycleChoice}
