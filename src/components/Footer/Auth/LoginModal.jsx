@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from '../../../tools/Modal';
 import Button from '../../../tools/Button';
-import API_URL from '../../../config';
+import API_URL, { getApiHeaders } from '../../../config';
 
 function LoginModal({ isOpen, onClose, onLogin }) {
   const [username, setUsername] = useState('');
@@ -17,13 +17,9 @@ function LoginModal({ isOpen, onClose, onLogin }) {
     }
 
     setError('');
-    setIsLoading(true);
-
-    try {      const response = await fetch(`${API_URL}/login`, {
+    setIsLoading(true);    try {      const response = await fetch(`${API_URL}/login`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getApiHeaders(),
         credentials: 'include',
         body: JSON.stringify({ username, password }),
       });
@@ -32,14 +28,13 @@ function LoginModal({ isOpen, onClose, onLogin }) {
 
       if (!response.ok) {
         throw new Error(data.error || 'Login failed');
-      }
-
-      // Login successful
+      }      // Login successful
       if (onLogin) {
         onLogin({ 
           id: data.user_id, 
           username: username,
-          isLoggedIn: true
+          isLoggedIn: true,
+          highscore: data.highscore || 0
         });
       }
       

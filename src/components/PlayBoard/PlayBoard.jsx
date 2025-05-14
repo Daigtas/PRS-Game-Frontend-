@@ -1,12 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ChooseButton from './ChooseButton';
 import PlayButton from './PlayButton';
 import Results from './Results';
 import './playBoard.css';
 
-function PlayBoard({ playerChoice, computerChoice, result, updatePlayerChoice, playGame, currentUser }) {  const [isAnimating, setIsAnimating] = useState(false);
+function PlayBoard({ playerChoice, computerChoice, result, updatePlayerChoice, playGame, currentUser }) {
+  const [isAnimating, setIsAnimating] = useState(false);
   const [tempComputerChoice, setTempComputerChoice] = useState(null);
-  const [showResults, setShowResults] = useState(false);  
+  const [showResults, setShowResults] = useState(false);
+    useEffect(() => {
+    if (!isAnimating && computerChoice) {
+      setTempComputerChoice(computerChoice);
+    }
+  }, [computerChoice, isAnimating]);
+  
+  // Ensure the computer choice is correctly displayed after animation stops
+  useEffect(() => {
+    if (!isAnimating && computerChoice) {
+      // Small delay to ensure state is in sync
+      const timer = setTimeout(() => {
+        setTempComputerChoice(computerChoice);
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [isAnimating, computerChoice]);
   
   const handlePlay = () => {
     if (!playerChoice) {
@@ -21,19 +38,10 @@ function PlayBoard({ playerChoice, computerChoice, result, updatePlayerChoice, p
     let interval = setInterval(() => {
       const randomChoice = choices[Math.floor(Math.random() * choices.length)];
       setTempComputerChoice(randomChoice);
-    }, 100);
-
-    // Wait for animation to complete before updating game state
-    setTimeout(() => {
+    }, 100);    setTimeout(() => {
       clearInterval(interval);
-      
-      // Only call playGame after animation finishes
       playGame();
-      
-      setTempComputerChoice(computerChoice);
       setIsAnimating(false);
-      
-      // Show results immediately after animation ends to prevent layout shift
       setShowResults(true);
     }, 2000);
   };
@@ -50,11 +58,10 @@ function PlayBoard({ playerChoice, computerChoice, result, updatePlayerChoice, p
           {showResults ? <Results result={result} /> : <div className="result-placeholder">VS</div>}
           <PlayButton onPlay={handlePlay} />
         </div>
-        
-        <div className="choice-container">
+          <div className="choice-container">
           <h3>Computer Choice</h3>
           <div className={`choice-icon computer-choice ${isAnimating ? 'animate' : ''}`}>
-            <i className={getIconClass(tempComputerChoice || computerChoice)}></i>
+            <i className={getIconClass(isAnimating ? tempComputerChoice : computerChoice)}></i>
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import Main from './components/Main';
 import './styles/main.css';
-import API_URL from './config';
+import API_URL, { getApiHeaders } from './config';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -13,6 +13,58 @@ function App() {
     history: [],
     scores: { zaidejas: 0, pc: 0 }
   });
+
+  // Save user data to localStorage
+  const saveUserToLocalStorage = useCallback((user) => {
+    if (user) {
+      localStorage.setItem('prs_user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('prs_user');
+    }
+  }, []);
+
+  // Load user from localStorage on initial render
+  const loadUserFromLocalStorage = useCallback(async () => {
+    try {
+      const storedUser = localStorage.getItem('prs_user');
+      if (storedUser) {
+        const user = JSON.parse(storedUser);
+        
+        // Verify if user session is still valid by making an API request
+        try {
+          const response = await fetch(`${API_URL}/user/${user.id}`, {
+            headers: getApiHeaders(),
+            credentials: 'include'
+          });
+          
+          if (response.ok) {
+            const userData = await response.json();
+            // Update the stored user with latest data from server
+            const updatedUser = {
+              ...user,
+              highscore: userData.highscore || user.highscore || 0
+            };
+            setCurrentUser(updatedUser);
+            saveUserToLocalStorage(updatedUser);
+            console.log('User session restored from localStorage');
+          } else {
+            // If API returns an error, the session is likely expired
+            console.log('User session expired or invalid');
+            localStorage.removeItem('prs_user');
+            setCurrentUser(null);
+          }
+        } catch (error) {
+          console.error('Error verifying user session:', error);
+          // Keep the user logged in even if verification fails (offline mode)
+          setCurrentUser(user);
+        }
+      }
+    } catch (error) {
+      console.error('Error loading user from localStorage:', error);
+    }
+  }, [saveUserToLocalStorage]);
+
+  // Load game data from localStorage
   const loadFromLocalStorage = useCallback(() => {
     try {
       const storedHistory = localStorage.getItem('istorija');
@@ -47,17 +99,13 @@ function App() {
       const storedHistory = localStorage.getItem('istorija');
       if (storedHistory) {
         const historyData = JSON.parse(storedHistory);
-        
-        const batchSize = 10;
+          const batchSize = 10;
         for (let i = 0; i < historyData.length; i += batchSize) {
           const batch = historyData.slice(i, i + batchSize);
           
           await fetch(`${API_URL}/game_history/batch`, {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${currentUser.token}`
-            },
+            headers: getApiHeaders(),
             body: JSON.stringify({
               user_id: currentUser.id,
               games: batch.map(item => ({
@@ -72,13 +120,9 @@ function App() {
         if (storedScores) {
           const scoresData = JSON.parse(storedScores);
           const userScore = scoresData.zaidejas || 0;
-          
-          if (userScore > (currentUser.highscore || 0)) {            await fetch(`${API_URL}/update_highscore`, {
+            if (userScore > (currentUser.highscore || 0)) {            await fetch(`${API_URL}/update_highscore`, {
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${currentUser.token}`
-              },
+              headers: getApiHeaders(),
               credentials: 'include',
               body: JSON.stringify({
                 user_id: currentUser.id,
@@ -100,9 +144,8 @@ function App() {
       console.error('Sync Error:', error);
     }
   }, [currentUser]);
-
   const fetchUserGameData = useCallback(async () => {
-    if (!currentUser || !currentUser.id || !currentUser.token) {
+    if (!currentUser || !currentUser.id) {
       return;
     }
     
@@ -118,12 +161,9 @@ function App() {
       return;
     }
     
-    try {
-      window.lastGameDataFetch[userId] = now;
+    try {      window.lastGameDataFetch[userId] = now;
         const historyResponse = await fetch(`${API_URL}/game_history/${userId}`, {
-        headers: {
-          'Authorization': `Bearer ${currentUser.token}`
-        },
+        headers: getApiHeaders(),
         credentials: 'include'
       });
       
@@ -151,6 +191,15 @@ function App() {
     }
   }, [currentUser, syncLocalStorageToApi]);
 
+  useEffect(() => {
+    loadUserFromLocalStorage();
+  }, [loadUserFromLocalStorage]);
+  // On initial mount, load user from localStorage
+  useEffect(() => {
+    loadUserFromLocalStorage();
+  }, [loadUserFromLocalStorage]);
+
+  // When user changes, fetch their game data or load from localStorage
   useEffect(() => {
     if (currentUser && currentUser.id) {
       fetchUserGameData();
@@ -199,26 +248,35 @@ function App() {
     });
     
     localStorage.setItem('istorija', JSON.stringify(newHistory));
-    localStorage.setItem('taskai', JSON.stringify(newScores));
-    const currentScore = newScores.zaidejas;
+    localStorage.setItem('taskai', JSON.stringify(newScores));    const currentScore = newScores.zaidejas;
     if (currentUser && currentUser.id && currentScore > (currentUser.highscore || 0)) {
-      setCurrentUser(prev => ({
-        ...prev,
+      console.log(`Player score ${currentScore} > current highscore ${currentUser.highscore}, updating...`);
+      
+      // Update user state with new highscore
+      const updatedUser = {
+        ...currentUser,
         highscore: currentScore
-      }));
-        fetch(`${API_URL}/update_highscore`, {
+      };
+      setCurrentUser(updatedUser);
+      // Save updated user to localStorage
+      saveUserToLocalStorage(updatedUser);
+      
+      fetch(`${API_URL}/update_highscore`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${currentUser.token}`
-        },
+        headers: getApiHeaders(),
         credentials: 'include',
         body: JSON.stringify({
           user_id: currentUser.id,
           highscore: currentScore
         })
       })
-      .then(() => console.log('Highscore updated immediately to:', currentScore))
+      .then(response => response.json())
+      .then(data => {
+        console.log('Highscore update response:', data);
+        if (data.highscore !== currentScore) {
+          console.warn(`Server returned different highscore: ${data.highscore} vs local: ${currentScore}`);
+        }
+      })
       .catch(error => console.error('Failed to update highscore immediately:', error));
     }
 
@@ -235,26 +293,20 @@ function App() {
       window.apiUpdateTimeout = setTimeout(async () => {
         try {
           if (window.pendingGameUpdates && window.pendingGameUpdates.length > 0) {
-            const updates = [...window.pendingGameUpdates];
-            window.pendingGameUpdates = [];              await fetch(`${API_URL}/game_history/batch`, {
+            const updates = [...window.pendingGameUpdates];            window.pendingGameUpdates = [];              await fetch(`${API_URL}/game_history/batch`, {
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${currentUser.token}`
-              },
+              headers: getApiHeaders(),
               credentials: 'include',
               body: JSON.stringify({
                 user_id: currentUser.id,
                 games: updates
               })
             });
-            
-            const currentScore = newScores.zaidejas;            if (currentScore > (currentUser.highscore || 0)) {              await fetch(`${API_URL}/update_highscore`, {
+              const currentScore = newScores.zaidejas;            if (currentScore > (currentUser.highscore || 0)) {              console.log(`Batch update: Current score (${currentScore}) > highscore (${currentUser.highscore})`);
+              
+              const response = await fetch(`${API_URL}/update_highscore`, {
                 method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${currentUser.token}`
-                },
+                headers: getApiHeaders(),
                 credentials: 'include',
                 body: JSON.stringify({
                   user_id: currentUser.id,
@@ -262,10 +314,23 @@ function App() {
                 })
               });
               
-              setCurrentUser(prev => ({
-                ...prev,
+              const data = await response.json();
+              console.log('Batch highscore update response:', data);
+              
+              if (data && data.highscore) {
+                if (data.highscore !== currentScore) {
+                  console.warn(`Server returned different highscore: ${data.highscore} vs local: ${currentScore}`);
+                }
+              } else {
+                console.error('Highscore update failed - server response did not contain highscore');
+              }              
+              const updatedUser = {
+                ...currentUser,
                 highscore: currentScore
-              }));
+              };
+              setCurrentUser(updatedUser);
+              // Save to localStorage
+              saveUserToLocalStorage(updatedUser);
               
               console.log('Highscore updated to:', currentScore);
             }
@@ -313,29 +378,35 @@ function App() {
   };  const handleLogin = async (user) => {
     console.log('User logging in with data:', user);
     setCurrentUser(user);
-    await syncLocalStorageToApi();
     
-    try {      const response = await fetch(`${API_URL}/user/${user.id}`, {
-        headers: {
-          'Authorization': `Bearer ${user.token}`
-        },
+    // Save user to localStorage immediately
+    saveUserToLocalStorage(user);
+    
+    await syncLocalStorageToApi();
+      try {      const response = await fetch(`${API_URL}/user/${user.id}`, {
+        headers: getApiHeaders(),
         credentials: 'include'
       });
       
       if (response.ok) {
         const userData = await response.json();
-        setCurrentUser(prev => ({
-          ...prev,
+        const updatedUser = {
+          ...user,
           highscore: userData.highscore || 0
-        }));
+        };
+        
+        setCurrentUser(updatedUser);
+        // Update localStorage with latest user data
+        saveUserToLocalStorage(updatedUser);
       }
     } catch (error) {
       console.error('Error fetching updated user data:', error);
     }
   };
-
   const handleLogout = () => {
     setCurrentUser(null);
+    // Clear user data from localStorage
+    saveUserToLocalStorage(null);
     loadFromLocalStorage();
   };
 

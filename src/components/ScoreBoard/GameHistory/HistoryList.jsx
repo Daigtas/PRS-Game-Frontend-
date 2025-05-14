@@ -2,7 +2,6 @@ import React from 'react';
 import './HistoryList.css';
 
 const HistoryList = ({ history }) => {
-  // Display latest games first
   const sortedHistory = [...history].sort((a, b) => b.zaidimas - a.zaidimas);
 
   const getChoiceDisplay = (choice) => {

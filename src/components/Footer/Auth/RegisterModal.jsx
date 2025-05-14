@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from '../../../tools/Modal';
 import Button from '../../../tools/Button';
-import API_URL from '../../../config';
+import API_URL, { getApiHeaders } from '../../../config';
 
 function RegisterModal({ isOpen, onClose, onRegisterSuccess }) {
   const [username, setUsername] = useState('');
@@ -13,7 +13,6 @@ function RegisterModal({ isOpen, onClose, onRegisterSuccess }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Validate inputs
     if (!username || !password) {
       setError('Please enter both username and password');
       return;
@@ -28,12 +27,9 @@ function RegisterModal({ isOpen, onClose, onRegisterSuccess }) {
     setIsLoading(true);
 
     try {
-      // Register the user
       const registerResponse = await fetch(`${API_URL}/register`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getApiHeaders(),
         credentials: 'include',
         body: JSON.stringify({ username, password }),
       });
@@ -44,12 +40,9 @@ function RegisterModal({ isOpen, onClose, onRegisterSuccess }) {
         throw new Error(registerData.error || 'Registration failed');
       }
 
-      // If registration successful, login automatically
       const loginResponse = await fetch(`${API_URL}/login`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getApiHeaders(),
         credentials: 'include',
         body: JSON.stringify({ username, password }),
       });
@@ -60,16 +53,15 @@ function RegisterModal({ isOpen, onClose, onRegisterSuccess }) {
         throw new Error('Registration successful but auto-login failed. Please log in manually.');
       }
 
-      // Registration and login successful
       if (onRegisterSuccess) {
         onRegisterSuccess({ 
           id: loginData.user_id, 
           username: username,
-          isLoggedIn: true
+          isLoggedIn: true,
+          highscore: loginData.highscore || 0
         });
       }
       
-      // Reset form and close modal
       setUsername('');
       setPassword('');
       setConfirmPassword('');

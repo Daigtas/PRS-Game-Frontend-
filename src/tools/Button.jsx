@@ -14,6 +14,3 @@ function Button({ type = 'secondary', onClick, children, className = '', ...prop
 }
 
 export default Button;
-//usage <Button type="primary" onClick={onPlay} className="css-class-name" >
-//types: primary, secondary
-//onClick = js function

@@ -15,11 +15,9 @@ const Main = ({
   onLogout
 }) => {
   const [scoreUpdateTrigger, setScoreUpdateTrigger] = useState(0);
-  
-  // Update trigger when gameState changes
   useEffect(() => {
     setScoreUpdateTrigger(prev => prev + 1);
-  }, [gameState.scores, gameState.history]);
+  }, [gameState.scores, gameState.history, currentUser?.highscore]);
   return (
     <div className="container">
       <Header currentUser={currentUser} />      <ScoreBoard 
