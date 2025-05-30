@@ -2,7 +2,7 @@
 
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 
-Frontend interface for a Paper-Rock-Scissors game, connecting to a [separate backend API]([https://github.com/Daigtas/PRS-Game-Backend](https://github.com/Daigtas/-Daigtas-PRS-Game-Backend-)).
+Frontend interface for a Paper-Rock-Scissors game, connecting to a [separate backend API](https://github.com/Daigtas/-Daigtas-PRS-Game-Backend-).
 Preview:
 ![game](https://github.com/user-attachments/assets/b5b2d3a1-cf9f-4e46-8c82-fb1b9323b892)
 
