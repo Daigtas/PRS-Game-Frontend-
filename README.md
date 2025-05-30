@@ -1,7 +1,6 @@
 # 🎮 PRS Game - React Frontend
 
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 
 Frontend interface for a Paper-Rock-Scissors game, connecting to a [separate backend API](https://github.com/Daigtas/PRS-Game-Backend).
 
